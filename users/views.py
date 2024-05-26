@@ -11,10 +11,17 @@ class ListCreateUserView(ListCreateAPIView):
     model = User
     serializer_class = UserModelSerializer
 
+    
+    def get_queryset(self):
+        return User.objects.all()
+
 
 class RetriveUpdateDestroyUserView(RetrieveUpdateDestroyAPIView):
     model = User
     serializer_class = UserModelSerializer
+
+    def get_queryset(self):
+        return User.objects.all()
 
 
 class LoginUserView(APIView):
@@ -26,7 +33,7 @@ class LoginUserView(APIView):
         user = authenticate(username=username, password=password)
 
         if user is not None:
-            login(user)
+            login(request, user)
             return Response({'message': 'Login bem-sucedido!'}, status=status.HTTP_200_OK)
         else:
             return Response({'message': 'Credenciais inválidas.'}, status=status.HTTP_401_UNAUTHORIZED)
